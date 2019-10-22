@@ -13,18 +13,28 @@
             <a class="w3-bar-item w3-button w3-mobile" href="https://github.com/SnowSE/insight">Insight's GitHub</a>
         </nav>
             <header class="w3-container w3-light-grey">
-                <h3>Image Upload</h3>
+                <h3>Image Url Upload</h3>
                 </header>
             <div class="w3-container">
-                <form id="imageForm" >
+                <form id="urlForm">
                     <input id="imageUrl" type="text" placeholder="Url">
-                    <input type="file" id="imageFile" required>
                 </form>
+                <button class="w3-btn w3-green" id="formSubmit"> Submit Url </button>
+            <header class="w3-container w3-light-grey">
+                <h3>Image File Upload</h3>
+            </header>
+            <form id="imageForm">
+                <input type="file" id="imageFile" required>
+            </form>
+            <button class="w3-btn w3-green" id="imageSubmit"> Submit Image </button>
             </div>
+            <br>
+            <br>
+            <br>
+            <br>
             <div class="displayImage">
                 <img id="imagePreview" class="imageDisplay" src="https://semantic-ui.com/images/wireframe/image.png" height="400px">
             </div>
-            <button class="w3-btn w3-green" id="formSubmit"> Submit Url </button>
-            <button class="w3-btn w3-green" id="imageSubmit"> Submit Image </button>
+            
     </body>
 </html>
