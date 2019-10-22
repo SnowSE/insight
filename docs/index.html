@@ -6,19 +6,25 @@
         <script src="fileUpload.js"></script>
     </head>
     <body>
-        <nav class="w3-bar w3-green">
+        <nav class="w3-bar w3-green" style="height: 65px;">
+            <h3 style="padding-left: 15px;">Insight</h3>
+        </nav>
+        <nav class="w3-bar w3-gray">
             <a class="w3-bar-item w3-button w3-mobile" href="https://github.com/SnowSE/insight">Insight's GitHub</a>
         </nav>
-        <div class="w3-container">
-            <form id="imageForm" >
-                <input id="imageUrl" type="text" placeholder="Url">
-                <input type="file" id="imageFile" required>
-            </form>
-        </div>
-        <div class="displayImage">
-            <img id="imagePreview" class="imageDisplay" src="https://semantic-ui.com/images/wireframe/image.png" height="400px">
-        </div>
-        <button class="w3-btn w3-green" id="formSubmit"> Submit </button>
-        <button class="w3-btn w3-green" id="imageSubmit"> Submit Image </button>
+            <header class="w3-container w3-light-grey">
+                <h3>Image Upload</h3>
+                </header>
+            <div class="w3-container">
+                <form id="imageForm" >
+                    <input id="imageUrl" type="text" placeholder="Url">
+                    <input type="file" id="imageFile" required>
+                </form>
+            </div>
+            <div class="displayImage">
+                <img id="imagePreview" class="imageDisplay" src="https://semantic-ui.com/images/wireframe/image.png" height="400px">
+            </div>
+            <button class="w3-btn w3-green" id="formSubmit"> Submit Url </button>
+            <button class="w3-btn w3-green" id="imageSubmit"> Submit Image </button>
     </body>
 </html>
