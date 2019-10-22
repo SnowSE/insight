@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <script src="fileUpload.js"></script>
-    </head>
-    <body>
-        <nav class="w3-bar w3-green" style="height: 65px;">
-            <h3 style="padding-left: 15px;">Insight</h3>
-        </nav>
-        <nav class="w3-bar w3-gray">
-            <a class="w3-bar-item w3-button w3-mobile" href="https://github.com/SnowSE/insight">Insight's GitHub</a>
-        </nav>
-            <header class="w3-container w3-light-grey">
-                <h3>Image Url Upload</h3>
-                </header>
-            <div class="w3-container">
-                <form id="urlForm">
-                    <input id="imageUrl" type="text" placeholder="Url">
-                </form>
-                <button class="w3-btn w3-green" id="formSubmit"> Submit Url </button>
-            <header class="w3-container w3-light-grey">
-                <h3>Image File Upload</h3>
-            </header>
-            <form id="imageForm">
-                <input type="file" id="imageFile" required>
-            </form>
-            <button class="w3-btn w3-green" id="imageSubmit"> Submit Image </button>
-            </div>
-            <br>
-            <br>
-            <br>
-            <br>
-            <div class="displayImage">
-                <img id="imagePreview" class="imageDisplay" src="https://semantic-ui.com/images/wireframe/image.png" height="400px">
-            </div>
-            
-    </body>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="fileUpload.js"></script>
+  </head>
+  <body>
+    <nav class="w3-bar w3-green" style="height: 65px;">
+      <h3 style="padding-left: 15px;">Insight</h3>
+    </nav>
+    <nav class="w3-bar w3-gray">
+      <a
+        class="w3-bar-item w3-button w3-mobile"
+        href="https://github.com/SnowSE/insight"
+        >Insight's GitHub</a
+      >
+    </nav>
+    <div class="container" style="display: flex; align-items: center;
+    justify-content: center;">
+      <div class="card" style="width: 18rem; margin: 25px;">
+        <header class="w3-container w3-light-grey">
+          <h3>Image Url Upload</h3>
+        </header>
+        <img id="displayImageUrl" src="https://semantic-ui.com/images/wireframe/image.png" class="card-img-top" alt="...">
+        <form id="urlForm">
+          <input id="imageUrl" type="text" placeholder="Url" />
+        </form>
+        <button class="w3-btn w3-green" id="formSubmit">Submit Url</button>
+      </div>
+
+      <div class="card" style="width: 18rem; margin: 25px;">
+        <header class="w3-container w3-light-grey">
+          <h3>Image File Upload</h3>
+        </header>
+        <img id="displayImageFile" src="https://semantic-ui.com/images/wireframe/image.png" class="card-img-top" alt="...">
+        <form id="imageForm">
+          <input type="file" id="imageFile" required />
+        </form>
+        <button class="w3-btn w3-green" id="imageSubmit">Submit Image</button>
+      </div>
+
+    </div>
+  </body>
 </html>
