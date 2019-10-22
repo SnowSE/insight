@@ -1,0 +1,247 @@
+"acceptMappedClaims": null,
+  "addIns": [],
+  "allowGuestsSignIn": null,
+  "allowPassthroughUsers": null,
+  "appId": "60aa3cb5-411a-472b-aa3d-e270cc55cfdc",
+  "appLogoUrl": null,
+  "appPermissions": null,
+  "appRoles": [],
+  "applicationTemplateId": null,
+  "availableToOtherTenants": true,
+  "deletionTimestamp": null,
+  "displayName": "FirstEchoBot",
+  "errorUrl": null,
+  "groupMembershipClaims": null,
+  "homepage": null,
+  "identifierUris": [],
+  "informationalUrls": {
+    "marketing": null,
+    "privacy": null,
+    "support": null,
+    "termsOfService": null
+  },
+  "isDeviceOnlyAuthSupported": null,
+  "keyCredentials": [],
+  "knownClientApplications": [],
+  "logo@odata.mediaContentType": "application/json;odata=minimalmetadata; charset=utf-8",
+  "logo@odata.mediaEditLink": "directoryObjects/72a1bd08-1a9c-4d5f-8f7e-4ada1b7518fc/Microsoft.DirectoryServices.Application/logo",
+  "logoUrl": null,
+  "logoutUrl": null,
+  "mainLogo@odata.mediaEditLink": "directoryObjects/72a1bd08-1a9c-4d5f-8f7e-4ada1b7518fc/Microsoft.DirectoryServices.Application/mainLogo",
+  "oauth2AllowIdTokenImplicitFlow": true,
+  "oauth2AllowImplicitFlow": false,
+  "oauth2AllowUrlPathMatching": false,
+  "oauth2Permissions": [
+    {
+      "adminConsentDescription": "Allow the application to access FirstEchoBot on behalf of the signed-in user.",
+      "adminConsentDisplayName": "Access FirstEchoBot",
+      "id": "6c0468ce-066a-41ae-a277-9d284662efb4",
+      "isEnabled": true,
+      "type": "User",
+      "userConsentDescription": "Allow the application to access FirstEchoBot on your behalf.",
+      "userConsentDisplayName": "Access FirstEchoBot",
+      "value": "user_impersonation"
+    }
+  ],
+  "oauth2RequirePostResponse": false,
+  "objectId": "72a1bd08-1a9c-4d5f-8f7e-4ada1b7518fc",
+  "objectType": "Application",
+  "odata.metadata": "https://graph.windows.net/69b1eb98-124c-42d4-b8c1-7fa3999905a0/$metadata#directoryObjects/@Element",
+  "odata.type": "Microsoft.DirectoryServices.Application",
+  "optionalClaims": null,
+  "orgRestrictions": [],
+  "parentalControlSettings": {
+    "countriesBlockedForMinors": [],
+    "legalAgeGroupRule": "Allow"
+  },
+  "passwordCredentials": [
+    {
+      "additionalProperties": null,
+      "customKeyIdentifier": null,
+      "endDate": "2020-10-22T17:56:42.946252+00:00",
+      "keyId": "6ade7cb9-00c0-439b-9728-97a8abc0c292",
+      "startDate": "2019-10-22T17:56:42.946252+00:00",
+      "value": null
+    }
+  ],
+  "preAuthorizedApplications": null,
+  "publicClient": null,
+  "publisherDomain": "marcelozometapaniagstudents.onmicrosoft.com",
+  "recordConsentConditions": null,
+  "replyUrls": [],
+  "requiredResourceAccess": [],
+  "samlMetadataUrl": null,
+  "signInAudience": "AzureADMultipleOrgs",
+  "tokenEncryptionKeyId": null,
+  "wwwHomepage": null
+}
+
+
+
+
+
+
+
+
+
+/*WORKING JSON*/
+
+
+
+{
+  "id": "/subscriptions/218e0740-6516-4fa3-a201-cc9221f09b5f/resourceGroups/bmwInsight/providers/Microsoft.Resources/deployments/FirstBotTest",
+  "location": null,
+  "name": "FirstBotTest",
+  "properties": {
+    "correlationId": "8c26e304-7ec2-41a4-b7a1-400ae24580db",
+    "debugSetting": null,
+    "dependencies": [
+      {
+        "dependsOn": [
+          {
+            "id": "/subscriptions/218e0740-6516-4fa3-a201-cc9221f09b5f/resourceGroups/bmwInsight/providers/Microsoft.Web/serverfarms/WebAppBot",
+            "resourceGroup": "bmwInsight",
+            "resourceName": "WebAppBot",
+            "resourceType": "Microsoft.Web/serverfarms"
+          }
+        ],
+        "id": "/subscriptions/218e0740-6516-4fa3-a201-cc9221f09b5f/resourceGroups/bmwInsight/providers/Microsoft.Web/sites/FirstBotTestWeb3",
+        "resourceGroup": "bmwInsight",
+        "resourceName": "FirstBotTestWeb3",
+        "resourceType": "Microsoft.Web/sites"
+      },
+      {
+        "dependsOn": [
+          {
+            "id": "/subscriptions/218e0740-6516-4fa3-a201-cc9221f09b5f/resourceGroups/bmwInsight/providers/Microsoft.Web/sites/FirstBotTestWeb3",
+            "resourceGroup": "bmwInsight",
+            "resourceName": "FirstBotTestWeb3",
+            "resourceType": "Microsoft.Web/sites"
+          }
+        ],
+        "id": "/subscriptions/218e0740-6516-4fa3-a201-cc9221f09b5f/resourceGroups/bmwInsight/providers/Microsoft.BotService/botServices/SecondBotTestWeb3SnowCollege",
+        "resourceGroup": "bmwInsight",
+        "resourceName": "SecondBotTestWeb3SnowCollege",
+        "resourceType": "Microsoft.BotService/botServices"
+      }
+    ],
+    "duration": "PT1M3.4814294S",
+    "mode": "Incremental",
+    "onErrorDeployment": null,
+    "outputResources": [
+      {
+        "id": "/subscriptions/218e0740-6516-4fa3-a201-cc9221f09b5f/resourceGroups/bmwInsight/providers/Microsoft.BotService/botServices/SecondBotTestWeb3SnowCollege",
+        "resourceGroup": "bmwInsight"
+      },
+      {
+        "id": "/subscriptions/218e0740-6516-4fa3-a201-cc9221f09b5f/resourceGroups/bmwInsight/providers/Microsoft.Web/serverfarms/WebAppBot",
+        "resourceGroup": "bmwInsight"
+      },
+      {
+        "id": "/subscriptions/218e0740-6516-4fa3-a201-cc9221f09b5f/resourceGroups/bmwInsight/providers/Microsoft.Web/sites/FirstBotTestWeb3",
+        "resourceGroup": "bmwInsight"
+      }
+    ],
+    "outputs": null,
+    "parameters": {
+      "appId": {
+        "type": "String",
+        "value": "60aa3cb5-411a-472b-aa3d-e270cc55cfdc"
+      },
+      "appSecret": {
+        "type": "String",
+        "value": "Password1!"
+      },
+      "appServicePlanLocation": {
+        "type": "String",
+        "value": "West US"
+      },
+      "botId": {
+        "type": "String",
+        "value": "SecondBotTestWeb3SnowCollege"
+      },
+      "botSku": {
+        "type": "String",
+        "value": "F0"
+      },
+      "existingAppServicePlan": {
+        "type": "String",
+        "value": ""
+      },
+      "newAppServicePlanName": {
+        "type": "String",
+        "value": "WebAppBot"
+      },
+      "newAppServicePlanSku": {
+        "type": "Object",
+        "value": {
+          "capacity": 1,
+          "family": "S",
+          "name": "S1",
+          "size": "S1",
+          "tier": "Standard"
+        }
+      },
+      "newWebAppName": {
+        "type": "String",
+        "value": "FirstBotTestWeb3"
+      }
+    },
+    "parametersLink": null,
+    "providers": [
+      {
+        "id": null,
+        "namespace": "Microsoft.Web",
+        "registrationPolicy": null,
+        "registrationState": null,
+        "resourceTypes": [
+          {
+            "aliases": null,
+            "apiVersions": null,
+            "capabilities": null,
+            "locations": [
+              "westus"
+            ],
+            "properties": null,
+            "resourceType": "serverfarms"
+          },
+          {
+            "aliases": null,
+            "apiVersions": null,
+            "capabilities": null,
+            "locations": [
+              "westus"
+            ],
+            "properties": null,
+            "resourceType": "sites"
+          }
+        ]
+      },
+      {
+        "id": null,
+        "namespace": "Microsoft.BotService",
+        "registrationPolicy": null,
+        "registrationState": null,
+        "resourceTypes": [
+          {
+            "aliases": null,
+            "apiVersions": null,
+            "capabilities": null,
+            "locations": [
+              "global"
+            ],
+            "properties": null,
+            "resourceType": "botServices"
+          }
+        ]
+      }
+    ],
+    "provisioningState": "Succeeded",
+    "template": null,
+    "templateHash": "554788647258636492",
+    "templateLink": null,
+    "timestamp": "2019-10-22T18:27:39.403508+00:00"
+  },
+  "resourceGroup": "bmwInsight",
+  "type": "Microsoft.Resources/deployments"
+}
