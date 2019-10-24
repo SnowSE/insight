@@ -1,46 +1,90 @@
-# https://clouddeveloper.space/2017/10/26/deploy-azure-function-using-powershell/
+[cmdletbinding()]
+param(
+    
+)
 
-$location = 'centralus'
+$location = 'West US 2'
 
 $salt = get-random
 $resourceGroupRoot = "cognetiveResourceGroup"
 $resourceGroupName = $resourceGroupRoot+$salt
 $storageAccountName = 'ocrapistorage'+$salt
-$functionAppName = 'ocrapi'
-$functionName = 'ocrapifunction'
+$functionAppName = 'ocrapi'+$salt
+$functionName = 'ocrapifunction'+$salt
 $SourceFile = 'sourcefile.ps1'
 
 $ErrorActionPreference = "Stop"
-import-module Az
+
+if ((get-command -module "az*").count -eq 0) {
+    write-verbose "Couldn't find any Az modules, so I'm installing them"
+    write-progress -Activity "Installing Azure management modules"
+    Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
+    Import-Module Az
+}
+
+try {
+    write-progress "Testing user authentication with Azure"
+    Get-AzResourceGroup | out-null
+} catch {
+    Connect-AzAccount
+}
 
 $resourceGroups = Get-AzResourceGroup
-
+Write-Verbose "Removing any previous resource groups from this project..."
 $resourceGroups | Where-Object {$_.ResourceGroupName -like "$resourceGroupRoot*"} | Remove-AzResourceGroup -Verbose -AsJob -Force
 
 $resourceGroup = $resourceGroups | Where-Object { $_.ResourceGroupName -eq $resourceGroupName }
-if ( $null -eq $resourceGroup)
-{
-    write-host "Creating resource group"
+if ( $null -eq $resourceGroup) {
+    write-verbose "Creating resource group"
+    Write-Progress -Activity "Creating resource group $resourceGroupName"
     New-AzResourceGroup -Name $resourceGroupName -Location $location -force
 }
 
-$storageAccounts = Get-AzStorageAccount
-$storageAccount = $storageAccounts | Where-Object {$_.StorageAccountName -eq $storageAccountName}
-if ($null -eq $storageAccount)
-{
-    write-host "Creating storage account"
-    New-AzStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageAccountName -Location $location -SkuName “Standard_LRS”
-}
+# $storageAccounts = Get-AzStorageAccount
+# $storageAccount = $storageAccounts | Where-Object {$_.StorageAccountName -eq $storageAccountName}
+# if ($null -eq $storageAccount)
+# {
+#     write-host "Creating storage account"
+#     Write-Progress -Activity "Creating storage account $storageAccountName"
+#     New-AzStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageAccountName -Location $location -SkuName “Standard_LRS”
+# }
 
 write-host "Looking for web app (function)"
 $functionAppResource = Get-AzResource | Where-Object { $_.ResourceName -eq $functionAppName -And $_.ResourceType -eq ‘Microsoft.Web/Sites’ }
 
-if ($null -eq $functionAppResource)
-{
-    write-host "Creating web app (function)"
-    New-AzResource -ResourceType ‘Microsoft.Web/Sites’ -ResourceName $functionAppName -kind ‘functionapp’ -Location $location -ResourceGroupName $resourceGroupName -Properties @{ } -force
+if ($null -eq $functionAppResource) {
+    # https://clouddeveloper.space/2017/10/26/deploy-azure-function-using-powershell/
+
+    write-verbose "Creating web app (function)"
+
+    # Create the parameters for the file, which for this template is the function app name.
+    $TemplateParams = @{
+        "subscriptionId" = (Get-AzSubscription).Id;
+        "name" = $functionAppName;
+        "location" = "West US 2";
+        "hostingEnvironment" = "";
+        "hostingPlanName" = $resourceGroupRoot+"HostingPlan"+$salt;
+        "serverFarmResourceGroup" = "serverFarmResourceGroup"+$salt;
+        "alwaysOn" = $false;
+        "storageAccountName" = $storageAccountName;
+        "linuxFxVersion" = "DOCKER|microsoft/azure-functions-dotnet-core2.0:2.0";
+        "sku" = "Dynamic";
+        "skuCode" = "Y1";
+        "workerSize" = "0";
+        "workerSizeId" = "0";
+        "numberOfWorkers"="1";
+        #"nameFromTemplate" = $functionAppName;
+    }
+
+    # Deploy the template
+    $valid = test-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile template.json -TemplateParameterObject $TemplateParams -Verbose
+    if($valid) {
+        New-AzResourceGroupDeployment -Name "functionDeployment" -ResourceGroupName $resourceGroupName -TemplateFile template.json -TemplateParameterObject $TemplateParams -Verbose
+    }
+    write-host "Function app created!"
 }
 
+write-verbose "Getting storage account key"
 $keys = Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageAccount
 
 $accountKey = $keys | Where-Object { $_.KeyName -eq “Key1” } | Select-Object Value
@@ -66,7 +110,7 @@ $AppSettings = @{‘AzureWebJobsDashboard’       = $storageAccountConnectionSt
     ‘CUSTOMSETTING3’                           = ‘CustomValue3’
 }
 
-Set-AzureRMWebApp -Name $functionAppName -ResourceGroupName $resourceGroupName -AppSettings $AppSettings
+Set-AzWebApp -Name $functionAppName -ResourceGroupName $resourceGroupName -AppSettings $AppSettings
 
 # =========================================================================
 
