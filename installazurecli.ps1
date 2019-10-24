@@ -6,6 +6,6 @@
 
 #to install
 Install-Module -Name Az -AllowClobber -Scope CurrentUser
-
+import-module Az
 
 #teardown

@@ -2,37 +2,46 @@
 
 $location = 'centralus'
 
-$resourceGroupName = 'cognetiveResourceGroup'
-
-$storageAccount = 'saqwerty'
-
-$functionAppName = 'faqwerty'
-
-$functionName = 'azurefunctionqwerty'
-
+$salt = get-random
+$resourceGroupRoot = "cognetiveResourceGroup"
+$resourceGroupName = $resourceGroupRoot+$salt
+$storageAccountName = 'ocrapistorage'+$salt
+$functionAppName = 'ocrapi'
+$functionName = 'ocrapifunction'
 $SourceFile = 'sourcefile.ps1'
 
+$ErrorActionPreference = "Stop"
+import-module Az
 
-$resourceGroup = Get-AzureRmResourceGroup | Where-Object { $_.ResourceGroupName -eq $resourceGroupName }
+$resourceGroups = Get-AzResourceGroup
 
+$resourceGroups | Where-Object {$_.ResourceGroupName -like "$resourceGroupRoot*"} | Remove-AzResourceGroup -Verbose -AsJob -Force
+
+$resourceGroup = $resourceGroups | Where-Object { $_.ResourceGroupName -eq $resourceGroupName }
 if ( $null -eq $resourceGroup)
 {
-    New-AzureRmResourceGroup -Name $resourceGroupName -Location $location -force
+    write-host "Creating resource group"
+    New-AzResourceGroup -Name $resourceGroupName -Location $location -force
 }
 
-if (!(Test-AzureName -Storage $storageAccount))
+$storageAccounts = Get-AzStorageAccount
+$storageAccount = $storageAccounts | Where-Object {$_.StorageAccountName -eq $storageAccountName}
+if ($null -eq $storageAccount)
 {
-    New-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageAccount -Location $location -SkuName “Standard_LRS”
+    write-host "Creating storage account"
+    New-AzStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageAccountName -Location $location -SkuName “Standard_LRS”
 }
 
-$functionAppResource = Get-AzureRmResource | Where-Object { $_.ResourceName -eq $functionAppName -And $_.ResourceType -eq ‘Microsoft.Web/Sites’ }
+write-host "Looking for web app (function)"
+$functionAppResource = Get-AzResource | Where-Object { $_.ResourceName -eq $functionAppName -And $_.ResourceType -eq ‘Microsoft.Web/Sites’ }
 
 if ($null -eq $functionAppResource)
 {
-    New-AzureRmResource -ResourceType ‘Microsoft.Web/Sites’ -ResourceName $functionAppName -kind ‘functionapp’ -Location $location -ResourceGroupName $resourceGroupName -Properties @{ } -force
+    write-host "Creating web app (function)"
+    New-AzResource -ResourceType ‘Microsoft.Web/Sites’ -ResourceName $functionAppName -kind ‘functionapp’ -Location $location -ResourceGroupName $resourceGroupName -Properties @{ } -force
 }
 
-$keys = Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageAccount
+$keys = Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageAccount
 
 $accountKey = $keys | Where-Object { $_.KeyName -eq “Key1” } | Select-Object Value
 
