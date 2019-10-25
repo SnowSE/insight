@@ -1,6 +1,11 @@
 $(document).ready(function() {
     $("#urlForm").focusout(function(e){
-        $("#imagePreview")[0].src = $("#imageUrl")[0].value;
+        if($("#imageUrl").val().length == 0){
+            $("#displayImageUrl")[0].src = "https://semantic-ui.com/images/wireframe/image.png"
+        }
+        else{
+            $("#displayImageUrl")[0].src = $("#imageUrl")[0].value;
+        }
     });
 
     $("#imageForm").change(function(e){
@@ -11,7 +16,7 @@ $(document).ready(function() {
         if (FileReader && files && files.length) {
             var fr = new FileReader();
             fr.onload = function () {
-                $("#imagePreview")[0].src = fr.result;
+                $("#displayImageFile")[0].src = fr.result;
             }
             fr.readAsDataURL(files[0]);
         }
