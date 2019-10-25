@@ -29,9 +29,7 @@ $functionAppResource = Get-AzureRmResource | Where-Object { $_.ResourceName -eq 
 
 if ($null -eq $functionAppResource)
 {
-
     New-AzureRmResource -ResourceType ‘Microsoft.Web/Sites’ -ResourceName $functionAppName -kind ‘functionapp’ -Location $location -ResourceGroupName $resourceGroupName -Properties @{ } -force
-
 }
 
 $keys = Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageAccount
@@ -101,7 +99,7 @@ $newResourceId = ‘{0}/functions/{1}’ -f $baseResource.ResourceId, $functionN
 
 # now deploy the function itself
 
-New-AzureRmResource -ResourceId $newResourceId -Properties $props -force# -ApiVersion 2015-08-01
+New-AzureRmResource -ResourceId $newResourceId -Properties $props -force -ApiVersion 2015-08-01
 
 # =========================================================================
 
@@ -114,7 +112,7 @@ function Get-PublishingProfileCredentials($resourceGroupName, $webAppName)
 
     $publishingCredentials = Invoke-AzureRmResourceAction -ResourceGroupName $resourceGroupName -ResourceType $resourceType
 
-    -ResourceName $resourceName -Action list -Force# -ApiVersion 2015-08-01
+    -ResourceName $resourceName -Action list -Force -ApiVersion 2015-08-01
 
     return $publishingCredentials
 
