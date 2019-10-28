@@ -11,9 +11,6 @@
         "location": {
             "type": "string"
         },
-        "hostingEnvironment": {
-            "type": "string"
-        },
         "hostingPlanName": {
             "type": "string"
         },
@@ -52,8 +49,9 @@
             "type": "Microsoft.Web/sites",
             "kind": "functionapp,linux",
             "location": "[parameters('location')]",
-            "tags": {},
+            "tags": null,
             "dependsOn": [
+                "microsoft.insights/components/ocrapi82368",
                 "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
             ],
@@ -70,13 +68,16 @@
                             "value": "~2"
                         },
                         {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference('microsoft.insights/components/ocrapi82368', '2015-05-01').InstrumentationKey]"
+                        },
+                        {
                             "name": "AzureWebJobsStorage",
                             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
                         }
                     ]
                 },
-                "serverFarmId": "[concat('/subscriptions/', parameters('subscriptionId'),'/resourcegroups/', parameters('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
-                "hostingEnvironment": "[parameters('hostingEnvironment')]",
+                "serverFarmId": "[concat('/subscriptions/', parameters('subscriptionId'),'/resourcegroups/', parameters('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",                
                 "clientAffinityEnabled": false
             }
         },
@@ -86,19 +87,29 @@
             "type": "Microsoft.Web/serverfarms",
             "location": "[parameters('location')]",
             "kind": "linux",
-            "tags": {},
+            "tags": null,
             "dependsOn": [],
             "properties": {
                 "name": "[parameters('hostingPlanName')]",
                 "workerSize": "[parameters('workerSize')]",
                 "workerSizeId": "[parameters('workerSizeId')]",
                 "numberOfWorkers": "[parameters('numberOfWorkers')]",
-                "reserved": true,
-                "hostingEnvironment": "[parameters('hostingEnvironment')]"
+                "reserved": true
             },
             "sku": {
                 "Tier": "[parameters('sku')]",
                 "Name": "[parameters('skuCode')]"
+            }
+        },
+        {
+            "apiVersion": "2015-05-01",
+            "name": "ocrapi82368",
+            "type": "microsoft.insights/components",
+            "location": "westus",
+            "tags": null,
+            "properties": {
+                "ApplicationId": "[parameters('name')]",
+                "Request_Source": "IbizaWebAppExtensionCreate"
             }
         },
         {

@@ -3,7 +3,7 @@ param(
     [switch]$preservePreviousResourceGroups
 )
 
-$location = 'West US 2'
+$location = 'West US'
 
 $salt = get-random
 $resourceGroupRoot = "cognetiveResourceGroup"
@@ -48,13 +48,13 @@ write-verbose "Creating AzFunctions web app $functionAppName"
 $templateParameters = @{
     "subscriptionId" = (Get-AzSubscription).Id;
     "name" = $functionAppName;
-    "location" = "West US 2";
-    "hostingEnvironment" = "";
+    "location" = $location;
+    #"hostingEnvironment" = "bogusHostingEnvironment"+$salt;
     "hostingPlanName" = $resourceGroupRoot+"HostingPlan"+$salt;
-    "serverFarmResourceGroup" = "serverFarmResourceGroup"+$salt;
+    "serverFarmResourceGroup" = $resourceGroupName;
     "alwaysOn" = $false;
     "storageAccountName" = $storageAccountName;
-    "linuxFxVersion" = "DOCKER|microsoft/azure-functions-dotnet-core2.0:2.0";
+    "linuxFxVersion" = "DOCKER|mcr.microsoft.com/azure-functions/dotnet:2.0-appservice";
     "sku" = "Dynamic";
     "skuCode" = "Y1";
     "workerSize" = "0";
