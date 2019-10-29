@@ -36,7 +36,9 @@ if($preservePreviousResourceGroups) {
     Write-Warning "Preserving previous resource groups...they're still out there..."
 } else {
     Write-Verbose "Removing any previous resource groups from this project..."
-    $resourceGroups | Where-Object {$_.ResourceGroupName -like "$resourceGroupRoot*"} | Remove-AzResourceGroup -Verbose -AsJob -Force
+    $resourceGroups | 
+        #Where-Object {$_.ResourceGroupName -like "$resourceGroupRoot*"} | 
+        Remove-AzResourceGroup -Verbose -AsJob -Force
 }
 
 Write-Verbose "Creating resource group $resourceGroupName"
@@ -48,27 +50,33 @@ New-AzResourceGroup -Name $resourceGroupName -Location $location -force
 write-verbose "Creating AzFunctions web app $functionAppName"
 
 $templateParameters = @{
-    "subscriptionId" = (Get-AzSubscription).Id;
-    "name" = $functionAppName;
-    "location" = $location;
-    #"hostingEnvironment" = "bogusHostingEnvironment"+$salt;
-    "hostingPlanName" = $resourceGroupRoot+"HostingPlan"+$salt;
-    "serverFarmResourceGroup" = $resourceGroupName;
-    "alwaysOn" = $false;
-    "storageAccountName" = $storageAccountName;
-    "linuxFxVersion" = "DOCKER|mcr.microsoft.com/azure-functions/dotnet:2.0-appservice";
-    "sku" = "Dynamic";
-    "skuCode" = "Y1";
-    "workerSize" = "0";
-    "workerSizeId" = "0";
-    "numberOfWorkers"="1";
+    "site_name" = $resourceGroupName;
+    "component_name" = $resourceGroupName+"component";
+    "serverfarm_name" = $resourceGroupName+"serverfarm";
+    "storage_name" = $resourceGroupName+"storage";
 }
+# $templateParameters = @{
+#     "subscriptionId" = (Get-AzSubscription).Id;
+#     "name" = $functionAppName;
+#     "location" = $location;
+#     #"hostingEnvironment" = "bogusHostingEnvironment"+$salt;
+#     "hostingPlanName" = $resourceGroupRoot+"HostingPlan"+$salt;
+#     "serverFarmResourceGroup" = $resourceGroupName;
+#     "alwaysOn" = $false;
+#     "storageAccountName" = $storageAccountName;
+#     "linuxFxVersion" = "DOCKER|mcr.microsoft.com/azure-functions/dotnet:2.0-appservice";
+#     "sku" = "Dynamic";
+#     "skuCode" = "Y1";
+#     "workerSize" = "0";
+#     "workerSizeId" = "0";
+#     "numberOfWorkers"="1";
+# }
 
 Write-Verbose "Testing az resource group deployment"
 $valid = test-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile template.json -TemplateParameterObject $templateParameters -Verbose
 if($valid) {
     Write-Verbose "Deploying azure functions web app"
-    New-AzResourceGroupDeployment -Name "deploy1" -Mode Complete -ResourceGroupName $resourceGroupName -TemplateFile template.json -TemplateParameterObject $templateParameters -Verbose -DeploymentDebugLogLevel All
+    New-AzResourceGroupDeployment -Name "deploy1" -Mode Complete -Force -ResourceGroupName $resourceGroupName -TemplateFile template.json -TemplateParameterObject $templateParameters -Verbose -DeploymentDebugLogLevel All
 }
 write-host "Function app created!"
 
@@ -84,19 +92,12 @@ $storageAccountConnectionString = ‘DefaultEndpointsProtocol=https;AccountName=
 $AppSettings = @{ }
 
 $AppSettings = @{‘AzureWebJobsDashboard’       = $storageAccountConnectionString;
-
     ‘AzureWebJobsStorage’                      = $storageAccountConnectionString;
-
     ‘FUNCTIONS_EXTENSION_VERSION’              = ‘~1’;
-
     ‘WEBSITE_CONTENTAZUREFILECONNECTIONSTRING’ = $storageAccountConnectionString;
-
     ‘WEBSITE_CONTENTSHARE’                     = $storageAccount;
-
     ‘CUSTOMSETTING1’                           = ‘CustomValue1’;
-
     ‘CUSTOMSETTING2’                           = ‘CustomValue2’;
-
     ‘CUSTOMSETTING3’                           = ‘CustomValue3’
 }
 
