@@ -3,6 +3,8 @@ param(
     [switch]$preservePreviousResourceGroups
 )
 
+# docker run -it -v $(pwd):/insight/ azuresdk/azure-powershell-core 
+
 $location = 'West US'
 
 $salt = get-random
